@@ -55,7 +55,7 @@ def _detectTarget(targetPath, pathFmt, dtFmt, searchFolder):
 
 def parser():
     global debug
-    usage = 'python {} TARGET_PATH DEST_PATH FILE_NAME [--debug] [--help] [--interval 1]'\
+    usage = 'python {} TARGET_PATH DEST_PATH FILE_NAME [--help] [--interval 1] [--debug] '\
             .format(__file__)
     argparser = ArgumentParser(usage=usage)
     argparser.add_argument('TARGET_PATH', type=str,

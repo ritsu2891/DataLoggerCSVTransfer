@@ -3,7 +3,22 @@ import datetime
 import re
 import shutil
 import time
+
+import gettext
+
+def argParseLocalize(Text):
+    Text = Text.replace("usage", "使い方")
+    Text = Text.replace("show this help message and exit", "このヘルプ画面を出して終了します")
+    Text = Text.replace("positional arguments", "指定位置引数（必須）")
+    Text = Text.replace("optional arguments", "オプション引数")
+    Text = Text.replace("error:", "エラー:")
+    Text = Text.replace("the following arguments are required:", "以下の引数が必要です:")
+    return Text
+
+gettext.gettext = argParseLocalize
+
 from argparse import ArgumentParser
+
 
 latestCsvDatetime = None
 

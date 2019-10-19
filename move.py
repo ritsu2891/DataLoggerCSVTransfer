@@ -37,14 +37,14 @@ def _detectTarget(targetPath, pathFmt, dtFmt, searchFolder):
     return res
 
 def parser():
-    usage = 'Usage: python {} TARGET_PATH DEST_PATH DEST_FILE_NAME [--debug] [--help]'\
+    usage = 'Usage: python {} TARGET_PATH DEST_PATH FILE_NAME [--debug] [--help]'\
             .format(__file__)
     argparser = ArgumentParser(usage=usage)
-    argparser.add_argument('targetPath', type=str,
+    argparser.add_argument('TARGET_PATH', type=str,
                            help='監視対象のディレクトリ')
-    argparser.add_argument('destPath', type=str,
+    argparser.add_argument('DEST_PATH', type=str,
                            help='出力対象のディレクトリ')
-    argparser.add_argument('destFileName', type=str,
+    argparser.add_argument('FILE_NAME', type=str,
                            help='出力ファイル名')
     argparser.add_argument('-d', '--debug',
                            action='store_true',
@@ -56,9 +56,9 @@ if __name__ == '__main__':
     args = parser()
     print(args)
 
-    targetPath = args.targetPath
-    destPath = args.destPath
-    destFileName = args.destFileName
+    targetPath = args.TARGET_PATH
+    destPath = args.DEST_PATH
+    destFileName = args.FILE_NAME
 
     interval = 3
 

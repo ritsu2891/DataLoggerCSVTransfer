@@ -20,6 +20,7 @@ def argParseLocalize(Text):
 gettext.gettext = argParseLocalize
 
 from argparse import ArgumentParser
+from argparse import RawDescriptionHelpFormatter
 
 
 latestCsvDatetime = None
@@ -55,9 +56,10 @@ def _detectTarget(targetPath, pathFmt, dtFmt, searchFolder):
 
 def parser():
     global debug
+    description = "データロガーの最新CSVファイル自動コピースクリプト\n(c) 2019, Ritsuki KOKUBO (dev.rpaka)"
     usage = 'python {} TARGET_PATH DEST_PATH FILE_NAME [--help] [--interval 1] [--debug] '\
             .format(__file__)
-    argparser = ArgumentParser(usage=usage)
+    argparser = ArgumentParser(description=description, usage=usage, formatter_class=RawDescriptionHelpFormatter)
     argparser.add_argument('TARGET_PATH', type=str,
                            help='監視対象のディレクトリ')
     argparser.add_argument('DEST_PATH', type=str,

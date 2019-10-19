@@ -6,6 +6,8 @@ import time
 import copy
 import gettext
 
+debug = False
+
 def argParseLocalize(Text):
     Text = Text.replace("usage", "使い方")
     Text = Text.replace("show this help message and exit", "このヘルプ画面を出して終了します")
@@ -52,6 +54,7 @@ def _detectTarget(targetPath, pathFmt, dtFmt, searchFolder):
     return res
 
 def parser():
+    global debug
     usage = 'python {} TARGET_PATH DEST_PATH FILE_NAME [--debug] [--help]'\
             .format(__file__)
     argparser = ArgumentParser(usage=usage)
@@ -65,6 +68,7 @@ def parser():
                            action='store_true',
                            help='デバッグモード')
     args = argparser.parse_args()
+    debug = args.debug
     return args
 
 def raiseErrorMsg(msg):
@@ -77,9 +81,14 @@ def checkDestPath(destPath):
     if not destPath.is_dir():
         raiseErrorMsg("出力対象パスがフォルダではありません: {}".format(destPath.as_posix()))
 
+def execInDebugMode(fn):
+    if debug:
+        fn()
+
 if __name__ == '__main__':
     args = parser()
-    print(args)
+
+    execInDebugMode(lambda: print(args))
 
     targetPath = pathlib.Path(args.TARGET_PATH)
     destPath = pathlib.Path(args.DEST_PATH)
@@ -113,5 +122,7 @@ if __name__ == '__main__':
             print("● 新しいデータを発見しました：　{}".format(_targetPath.as_posix()))
             latestDt =  res[0]["dt"]
             shutil.copy2(_targetPath.as_posix(), destPath.joinpath(destFileName).as_posix())
+        else:
+            execInDebugMode(lambda: print("新しいデータは見つかりませんでした"))
 
         time.sleep(interval)

@@ -67,6 +67,16 @@ def parser():
     args = argparser.parse_args()
     return args
 
+def raiseErrorMsg(msg):
+    print("{}: エラー: {}".format(__file__, msg))
+    exit(1)
+
+def checkDestPath(destPath):
+    if not destPath.exists():
+        raiseErrorMsg("出力対象パスが存在しません: {}".format(destPath.as_posix()))
+    if not destPath.is_dir():
+        raiseErrorMsg("出力対象パスがフォルダではありません: {}".format(destPath.as_posix()))
+
 if __name__ == '__main__':
     args = parser()
     print(args)
@@ -74,6 +84,8 @@ if __name__ == '__main__':
     targetPath = pathlib.Path(args.TARGET_PATH)
     destPath = pathlib.Path(args.DEST_PATH)
     destFileName = args.FILE_NAME
+
+    checkDestPath(destPath)
 
     interval = 3
 

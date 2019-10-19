@@ -55,7 +55,7 @@ def _detectTarget(targetPath, pathFmt, dtFmt, searchFolder):
 
 def parser():
     global debug
-    usage = 'python {} TARGET_PATH DEST_PATH FILE_NAME [--debug] [--help]'\
+    usage = 'python {} TARGET_PATH DEST_PATH FILE_NAME [--debug] [--help] [--interval 1]'\
             .format(__file__)
     argparser = ArgumentParser(usage=usage)
     argparser.add_argument('TARGET_PATH', type=str,
@@ -64,6 +64,9 @@ def parser():
                            help='出力対象のディレクトリ')
     argparser.add_argument('FILE_NAME', type=str,
                            help='出力ファイル名')
+    argparser.add_argument('-i', '--interval', type=int,
+                           default=3,
+                           help='データ探索間隔(秒)')
     argparser.add_argument('-d', '--debug',
                            action='store_true',
                            help='デバッグモード')
@@ -96,8 +99,6 @@ if __name__ == '__main__':
 
     checkDestPath(destPath)
 
-    interval = 3
-
     pathFmt = ["^\d{2}-\d{2}-\d{2}", "^\d{2}_\d{2}_\d{2}", "^\d{6}-\d{6}"]
     dtFmt = ["%y-%m-%d", "%H_%M_%S", "%y%m%d-%H%M%S"]
     isFolder = [True, True, False]
@@ -125,4 +126,4 @@ if __name__ == '__main__':
         else:
             execInDebugMode(lambda: print("新しいデータは見つかりませんでした"))
 
-        time.sleep(interval)
+        time.sleep(args.interval)

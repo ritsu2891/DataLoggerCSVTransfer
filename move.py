@@ -52,7 +52,7 @@ def _detectTarget(targetPath, pathFmt, dtFmt, searchFolder):
     return res
 
 def parser():
-    usage = 'Usage: python {} TARGET_PATH DEST_PATH FILE_NAME [--debug] [--help]'\
+    usage = 'python {} TARGET_PATH DEST_PATH FILE_NAME [--debug] [--help]'\
             .format(__file__)
     argparser = ArgumentParser(usage=usage)
     argparser.add_argument('TARGET_PATH', type=str,

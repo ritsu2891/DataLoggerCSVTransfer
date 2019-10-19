@@ -54,6 +54,11 @@ def _detectTarget(targetPath, pathFmt, dtFmt, searchFolder):
         res = None
     return res
 
+def welcome():
+    print("\n_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/")
+    print("データロガーの最新CSVファイル自動コピースクリプト\n(c) 2019, Ritsuki KOKUBO (dev.rpaka)")
+    print("_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/\n")
+
 def parser():
     global debug
     description = "データロガーの最新CSVファイル自動コピースクリプト\n(c) 2019, Ritsuki KOKUBO (dev.rpaka)"
@@ -107,6 +112,7 @@ if __name__ == '__main__':
 
     latestDt = None
 
+    welcome()
     print("監視を開始します.....")
     print("終了するには Ctrl-C を入力してください")
 

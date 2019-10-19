@@ -68,7 +68,7 @@ def parser():
                            help='出力ファイル名')
     argparser.add_argument('-i', '--interval', type=int,
                            default=3,
-                           help='データ探索間隔(秒)')
+                           help='データ探索間隔(秒) [デフォルト: 3]')
     argparser.add_argument('-d', '--debug',
                            action='store_true',
                            help='デバッグモード')

@@ -3,7 +3,7 @@ import datetime
 import re
 import shutil
 import time
-
+import copy
 import gettext
 
 def argParseLocalize(Text):
@@ -26,7 +26,7 @@ def _detectTarget(targetPath, pathFmt, dtFmt, searchFolder):
     res = None
 
     # 対象ディレクトリの全フォルダ・ファイルを取得
-    targetCandidates = list(pathlib.Path(targetPath).glob('*'))
+    targetCandidates = list(targetPath.glob('*'))
 
     # 命名規則に合致するファイル・フォルダを残す
     matched = []
@@ -42,7 +42,7 @@ def _detectTarget(targetPath, pathFmt, dtFmt, searchFolder):
         # datetimeオブジェクトを生成
         dtObj = datetime.datetime.strptime(regexRes.group(), dtFmt)
 
-        matched = matched + [{ 'dt': dtObj, 'name': targetCandidate.name }]
+        matched = matched + [{ 'dt': dtObj, 'path': targetCandidate }]
 
     # 日付順に並び替え
     if (len(matched) > 0):
@@ -71,8 +71,8 @@ if __name__ == '__main__':
     args = parser()
     print(args)
 
-    targetPath = args.TARGET_PATH
-    destPath = args.DEST_PATH
+    targetPath = pathlib.Path(args.TARGET_PATH)
+    destPath = pathlib.Path(args.DEST_PATH)
     destFileName = args.FILE_NAME
 
     interval = 3
@@ -88,19 +88,18 @@ if __name__ == '__main__':
 
     while True:
 
-        _targetPath = targetPath
+        _targetPath = copy.copy(targetPath)
         res = None
 
         for i in range(3):
             res = _detectTarget(_targetPath, pathFmt[i], dtFmt[i], isFolder[i])
             if res == None:
                 break
-            __targetPath = _targetPath + res[0]["name"]
-            _targetPath = __targetPath + "/"
+            _targetPath = _targetPath.joinpath(res[0]["path"].name)
 
         if res != None and (latestDt == None or latestDt < res[0]["dt"]):
-            print("● 新しいデータを発見しました：　{}".format(__targetPath))
+            print("● 新しいデータを発見しました：　{}".format(_targetPath.as_posix()))
             latestDt =  res[0]["dt"]
-            shutil.copy2(__targetPath, destPath + destFileName)
+            shutil.copy2(_targetPath.as_posix(), destPath.joinpath(destFileName).as_posix())
 
         time.sleep(interval)

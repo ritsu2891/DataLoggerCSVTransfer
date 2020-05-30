@@ -122,10 +122,10 @@ if __name__ == '__main__':
         basicConfig(level=DEBUG)
 
     # パラメータ
-    nDeep = 3
     pathFmt = ["^\d{2}-\d{2}-\d{2}", "^\d{2}_\d{2}_\d{2}", "^\d{6}-\d{6}"]
     dtFmt = ["%y-%m-%d", "%H_%M_%S", "%y%m%d-%H%M%S"]
-    isFolder = [True, True, False]
+    nDeep = len(pathFmt)
+    # 内部データ
     latestDt = None
 
     # タイトルメッセージ表示
@@ -137,7 +137,7 @@ if __name__ == '__main__':
         res = None
 
         for i in range(nDeep):
-            res = detectTarget(_targetPath, pathFmt[i], dtFmt[i], isFolder[i])
+            res = detectTarget(_targetPath, pathFmt[i], dtFmt[i], i != nDeep)
             if res == None:
                 break
             _targetPath = _targetPath.joinpath(res[0]["path"].name)

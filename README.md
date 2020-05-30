@@ -5,6 +5,8 @@
   <img alt="Python" src="https://raw.githubusercontent.com/ritsu2891/NewestFileCopyScript/master/md-img/Python.svg" height="80px" />
 </div>
 
+<br/>
+
 ![動作イメージ](https://raw.githubusercontent.com/ritsu2891/NewestFileCopyScript/master/md-img/inuse.gif)
 
 ## 概要

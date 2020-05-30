@@ -26,10 +26,10 @@ latestCsvDatetime = None
 # 冒頭の表示
 def welcome():
     text = textwrap.dedent("""
-    /*--------------------------------------------.
-    　データロガーの最新CSVファイル自動コピースクリプト
-    　(c) 2019, Ritsuki KOKUBO (dev.rpaka)
-    `---------------------------------------------*/
+    /*------------------------------------------------.
+    　最新ファイル自動コピースクリプト
+    　(c) 2019-2020, Ritsuki KOKUBO (dev.rpaka)
+    `-------------------------------------------------*/
 
     監視を開始します.....
     終了するには Ctrl-C を入力してください
@@ -84,6 +84,7 @@ def detectTarget(targetPath, pathFmt, dtFmt, searchFolder):
 
     # 対象ディレクトリの全フォルダ・ファイルを取得
     targetCandidates = list(targetPath.glob('*'))
+    logger.debug(targetCandidates)
 
     # 命名規則に合致するファイル・フォルダを残す
     matched = []
@@ -93,6 +94,7 @@ def detectTarget(targetPath, pathFmt, dtFmt, searchFolder):
             continue
         # フォーマットと合わなければスキップ
         regexRes = re.match(pathFmt, targetCandidate.name)
+        logger.debug(regexRes)
         if regexRes == None:
             continue
 
@@ -100,6 +102,7 @@ def detectTarget(targetPath, pathFmt, dtFmt, searchFolder):
         dtObj = datetime.datetime.strptime(regexRes.group(), dtFmt)
 
         matched = matched + [{ 'dt': dtObj, 'path': targetCandidate }]
+    logger.debug(matched)
 
     # 日付順に並び替え
     if (len(matched) > 0):
@@ -137,10 +140,11 @@ if __name__ == '__main__':
         res = None
 
         for i in range(nDeep):
-            res = detectTarget(_targetPath, pathFmt[i], dtFmt[i], i != nDeep)
+            res = detectTarget(_targetPath, pathFmt[i], dtFmt[i], i != nDeep-1)
             if res == None:
                 break
             _targetPath = _targetPath.joinpath(res[0]["path"].name)
+        logger.debug(res)
 
         if res != None and (latestDt == None or latestDt < res[0]["dt"]):
             print("● 新しいデータを発見しました： {}".format(_targetPath.as_posix()))
